@@ -15,6 +15,9 @@
 	<description>Accounts</description>
 	<properties>
 		<java.version>17</java.version>
+		<openapi-generator-maven-plugin.version>7.9.0</openapi-generator-maven-plugin.version>
+		<springdoc.version>2.6.0</springdoc.version>
+		<openapi-generator.root.package>com.techinnovative.beauty.generated</openapi-generator.root.package>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -24,6 +27,20 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+
+		<!-- OpenAPI Generator -->
+		<dependency>
+			<groupId>org.openapitools</groupId>
+			<artifactId>jackson-databind-nullable</artifactId>
+			<version>0.2.6</version>
+		</dependency>
+
+		<!-- Swagger UI -->
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+			<version>${springdoc.version}</version>
 		</dependency>
 
 		<dependency>
@@ -48,6 +65,56 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.openapitools</groupId>
+				<artifactId>openapi-generator-maven-plugin</artifactId>
+				<version>${openapi-generator-maven-plugin.version}</version>
+				<executions>
+					<execution>
+						<id>generate-users-api</id>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<generatorName>spring</generatorName>
+							<library>spring-boot</library>
+							<inputSpec>
+								${project.basedir}/src/main/resources/openapi/server/users-api.yaml
+							</inputSpec>
+							<output>${project.build.directory}/generated-sources</output>
+
+							<packageName>${openapi-generator.root.package}</packageName>
+							<apiPackage>${openapi-generator.root.package}.v1.api</apiPackage>
+							<modelPackage>${openapi-generator.root.package}.v1.model</modelPackage>
+							<invokerPackage>${openapi-generator.root.package}.v1.invoker</invokerPackage>
+
+							<generateApiTests>false</generateApiTests>
+							<generateModelTests>false</generateModelTests>
+							<skipValidateSpec>false</skipValidateSpec>
+							<enablePostProcessFile>true</enablePostProcessFile>
+							<skipOverwrite>false</skipOverwrite>
+							<configOptions>
+								<reactive>false</reactive>
+								<delegatePattern>false</delegatePattern>
+								<interfaceOnly>true</interfaceOnly>
+								<sourceFolder>openapi-generator</sourceFolder>
+
+								<useBeanValidation>true</useBeanValidation>
+								<dateLibrary>java8</dateLibrary>
+								<serializableModel>true</serializableModel>
+								<useSpringBoot3>true</useSpringBoot3>
+								<useTags>true</useTags>
+							</configOptions>
+							<typeMappings>
+								<typeMapping>OffsetDateTime=LocalDateTime</typeMapping>
+							</typeMappings>
+							<importMappings>
+								<importMapping>java.time.OffsetDateTime=java.time.LocalDateTime</importMapping>
+							</importMappings>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>

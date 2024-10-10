@@ -1,9 +1,10 @@
-package com.techinnovative.beauty;
+package com.techinnovative.beauty.account;
 
+import com.techinnovative.beauty.account.integration.IntegrationTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
+@IntegrationTest
 class ApplicationTests {
 
 	@Test
