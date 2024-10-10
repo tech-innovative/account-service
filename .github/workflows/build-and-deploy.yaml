@@ -1,0 +1,27 @@
+name: Build Maven Project
+
+on:
+  push:
+    branches:
+      - 'main'
+  pull_request:
+    branches:
+      - 'main'
+
+jobs:
+  config:
+    uses: digilinq/reusable-workflows/.github/workflows/project-configuration.yaml@v5
+
+  build:
+    name: build
+    needs:
+      - config
+    uses: digilinq/reusable-workflows/.github/workflows/build-maven-project.yaml@v5
+    with:
+      runner: ${{ needs.config.outputs.github-runner }}
+      ref: ${{ github.ref }}
+      java-version: ${{ needs.config.outputs.java-version }}
+      maven-version: ${{ needs.config.outputs.maven-version }}
+      artifact-name: 'Package'
+      artifact-path: 'target/*.jar'
+      docker-file: 'Dockerfile'
